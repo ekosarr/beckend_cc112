@@ -7,6 +7,7 @@ const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
 const crypto = require('crypto');
+const ModelLokasi = require("../model/model_lokasi.js");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -114,6 +115,20 @@ router.post("/login", async (req, res) => {
     return res.status(500).json({ success: false, message: "Terjadi kesalahan" });
   }
 });
+
+router.get("/lokasi", async (req, res) => {
+  const { kejadian } = req.query;
+  
+  try {
+    // Ambil data lokasi berdasarkan kejadian dari database
+    let lokasi = await ModelLokasi.getByKejadian(kejadian); // Ganti dengan metode yang sesuai
+    res.status(200).json(lokasi);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: "Terjadi kesalahan" });
+  }
+});
+
 
 
 module.exports = router;
